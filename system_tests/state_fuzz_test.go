@@ -152,7 +152,7 @@ func FuzzStateTransition(f *testing.F) {
 		if len(seqMsg) > 0 && daprovider.IsL1AuthenticatedMessageHeaderByte(seqMsg[0]) {
 			return
 		}
-		chainDb := rawdb.NewMemoryDatabase()
+		executionDb := rawdb.NewMemoryDatabase()
 		chainConfig := chaininfo.ArbitrumDevTestChainConfig()
 		serializedChainConfig, err := json.Marshal(chainConfig)
 		if err != nil {
@@ -166,7 +166,7 @@ func FuzzStateTransition(f *testing.F) {
 		}
 		options := core.DefaultConfig().WithStateScheme(env.GetTestStateScheme())
 		stateRoot, err := arbosState.InitializeArbosInDatabase(
-			chainDb,
+			executionDb,
 			options,
 			statetransfer.NewMemoryInitDataReader(&statetransfer.ArbosInitializationInfo{}),
 			chainConfig,
@@ -179,7 +179,7 @@ func FuzzStateTransition(f *testing.F) {
 			panic(err)
 		}
 		trieDBConfig := options.TriedbConfig()
-		statedb, err := state.New(stateRoot, state.NewDatabase(triedb.NewDatabase(chainDb, trieDBConfig), nil))
+		statedb, err := state.New(stateRoot, state.NewDatabase(triedb.NewDatabase(executionDb, trieDBConfig), nil))
 		if err != nil {
 			panic(err)
 		}

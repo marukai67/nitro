@@ -62,7 +62,7 @@ func testBlocksReExecutorModes(t *testing.T, onMultipleRanges bool) {
 	// Reexecute blocks at mode full
 	c.MinBlocksPerThread = 10
 	Require(t, c.Validate())
-	executorFull, err := blocksreexecutor.New(&c, blockchain, builder.L2.ExecNode.ChainDB, feedErrChan)
+	executorFull, err := blocksreexecutor.New(&c, blockchain, builder.L2.ExecNode.ExecutionDB, feedErrChan)
 	Require(t, err)
 	success := make(chan struct{})
 	executorFull.Start(ctx, success)
@@ -76,7 +76,7 @@ func testBlocksReExecutorModes(t *testing.T, onMultipleRanges bool) {
 	c.Mode = "random"
 	c.MinBlocksPerThread = 20
 	Require(t, c.Validate())
-	executorRandom, err := blocksreexecutor.New(&c, blockchain, builder.L2.ExecNode.ChainDB, feedErrChan)
+	executorRandom, err := blocksreexecutor.New(&c, blockchain, builder.L2.ExecNode.ExecutionDB, feedErrChan)
 	Require(t, err)
 	success = make(chan struct{})
 	executorRandom.Start(ctx, success)
